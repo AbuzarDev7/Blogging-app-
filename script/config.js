@@ -16,4 +16,4 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/12.4.0/firebase
   const app = initializeApp(firebaseConfig);
    export const auth = getAuth(app)
    export   const db = getFirestore(app);
-   export const provider = new GoogleAuthProvider();
+   export const provider = new GoogleAuthProvider(app);

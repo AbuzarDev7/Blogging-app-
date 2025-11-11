@@ -15,42 +15,39 @@
     <nav id="navMenu">
       <a href="#">Home</a>
       <a href="#">My Blogs</a>
-      <a href="#">Logout</a>
+     <a href="#" id="userProfile">User</a>
+
+      <a href="#" id="logoutBtn">Logout</a>
     </nav>
   </header>
 
   <!-- Dashboard -->
   <div class="dashboard">
     <h2>Welcome Back 👋</h2>
-
+<form id="form">
     <div class="blog-form">
-      <input type="text" placeholder="Enter blog title" />
-      <textarea rows="5" placeholder="Write your post..."></textarea>
-      <button>Publish Blog</button>
+      <input type="text" placeholder="Enter blog title" id="title" />
+      <textarea rows="5" placeholder="Write your post..." id="post"></textarea>
+      <button type="submit">Publish Blog</button>
     </div>
-
+</form>
     <div class="blog-list">
       <h3>My Blogs</h3>
 
-      <div class="blog-card">
-        <h4>How to Stay Productive as a Developer</h4>
-        <p>Discover practical methods to improve your workflow and get more done efficiently every day.</p>
-        <div class="actions">
-          <button>Edit</button>
-          <button>Delete</button>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <h4>Design Tips for Better UI Consistency</h4>
-        <p>Consistent design builds trust and helps users focus on your content rather than the interface.</p>
-        <div class="actions">
-          <button>Edit</button>
-          <button>Delete</button>
-        </div>
-      </div>
-    </div>
+      <!-- <div class="blog-card">
+  <div class="user-info">
+    <img src="" alt="User" class="user-img">
+    <h4>How to Stay Productive as a Developer</h4>
   </div>
+  <p>Discover practical methods to improve your workflow and get more done efficiently every day.</p>
+  <div class="actions">
+    <button>Edit</button>
+    <button>Delete</button>
+  </div> -->
+</div>
+
+
+  
 
 
 

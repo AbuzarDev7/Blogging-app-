@@ -61,6 +61,19 @@
       font-size: 25px;
       cursor: pointer;
     }
+.user-img {
+  width: 80px;             /* Thoda bada */
+  height: 80px;
+  border-radius: 50%;       /* Circular */
+  object-fit: cover;        /* Image fit inside circle */
+  border: 4px solid #1e90ff; /* Stylish border color */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+  transition: transform 0.3s ease; /* Hover animation */
+}
+
+.user-img:hover {
+  transform: scale(1.1); /* Hover me thoda zoom effect */
+}
 
     @media (max-width: 768px) {
       nav {

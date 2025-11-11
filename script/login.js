@@ -54,3 +54,19 @@ link.addEventListener("click" ,()=>[
  
     })
 ])
+
+const googleBtn = document.querySelector("#google-login");
+googleBtn.addEventListener("click" ,()=>{
+    signInWithPopup(auth,provider)
+    .then((result)=>{
+    const user = result.user;
+    console.log(user);
+    window.location = "index.html"
+    })
+    .catch((error)=>{
+    const errorCode = error.code;
+    const errorMessage = error.message;
+   console.log(errorMessage);
+
+    })
+})
