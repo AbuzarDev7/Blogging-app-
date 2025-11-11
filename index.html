@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Blogging App</title>
+<link rel="stylesheet" href="./style/home.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <h1>Personal Blogging App</h1>
+    <div class="menu-toggle" id="menuToggle">☰</div>
+    <nav id="navMenu">
+      <a href="#">Home</a>
+      <a href="#">My Blogs</a>
+      <a href="#">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Dashboard -->
+  <div class="dashboard">
+    <h2>Welcome Back 👋</h2>
+
+    <div class="blog-form">
+      <input type="text" placeholder="Enter blog title" />
+      <textarea rows="5" placeholder="Write your post..."></textarea>
+      <button>Publish Blog</button>
+    </div>
+
+    <div class="blog-list">
+      <h3>My Blogs</h3>
+
+      <div class="blog-card">
+        <h4>How to Stay Productive as a Developer</h4>
+        <p>Discover practical methods to improve your workflow and get more done efficiently every day.</p>
+        <div class="actions">
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <h4>Design Tips for Better UI Consistency</h4>
+        <p>Consistent design builds trust and helps users focus on your content rather than the interface.</p>
+        <div class="actions">
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<script type="module" src="./script/app.js"></script>
+</body>
+</html>

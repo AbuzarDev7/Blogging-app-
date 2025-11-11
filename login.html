@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | BlogFlow</title>
+ <link rel="stylesheet" href="./style/login.css">
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>Welcome Back 👋</h2>
+    <p>Login to continue your blogging journey</p>
+
+    <form id="form">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="Enter your email" id="email" required />
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Enter your password" id="password" required />
+      </div>
+
+      <div class="links">
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="btn">Login</button>
+          <button id="google-login" class="google-btn">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo" />
+      Continue with Google
+    </button>
+    </form>
+
+    <div class="signup">
+      Don’t have an account? <a href="register.html">Create one</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module" src="./script/login.js"></script>
+</body>
+</html>

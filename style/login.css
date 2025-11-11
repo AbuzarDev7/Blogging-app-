@@ -1,0 +1,199 @@
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    /* ANIMATED BACKGROUND */
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #4f46e5, #10b981, #14b8a6);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* LOGIN CARD */
+    .login-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      padding: 2.5rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      width: 90%;
+      max-width: 420px;
+      color: white;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HEADER */
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      text-align: center;
+      font-size: 0.95rem;
+      margin-bottom: 1.8rem;
+      opacity: 0.9;
+    }
+
+    /* FORM */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+      opacity: 0.9;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    input:focus {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* BUTTON */
+    .btn {
+      background: linear-gradient(90deg, #4f46e5, #10b981);
+      border: none;
+      border-radius: 10px;
+      padding: 0.9rem;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* LINKS */
+    .links {
+      text-align: right;
+      font-size: 0.85rem;
+      margin-top: -0.5rem;
+    }
+
+    .links a {
+      color: #e0e7ff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .links a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* SIGNUP LINK */
+    .signup {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .signup a {
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .signup a:hover {
+      text-decoration: underline;
+    }
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background-color: #fff;
+      border: 1px solid #dadce0;
+      color: #3c4043;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      width: 100%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .google-btn:hover {
+      background-color: #f7f8f8;
+      transform: translateY(-1px);
+    }
+
+    .google-btn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: #ddd;
+    }
+
+    .divider span {
+      margin: 0 10px;
+      color: #888;
+      font-size: 14px;
+    }
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 2rem 1.5rem;
+      }
+    }
