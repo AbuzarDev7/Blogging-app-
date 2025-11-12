@@ -1,6 +1,6 @@
 import { 
   collection, addDoc, Timestamp, getDocs, query, where, 
-  deleteDoc, doc 
+  deleteDoc, doc ,updateDoc
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js"; 
 import { auth, db } from "./config.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
@@ -114,7 +114,7 @@ function renderBlogs() {
       </div>
     `;
 
-    // Delete button
+    // 🗑 Delete button
     blogCard.querySelector(".deleteBtn").addEventListener("click", async () => {
       try {
         await deleteDoc(doc(db, "blogs", post.docId));
@@ -125,9 +125,39 @@ function renderBlogs() {
       }
     });
 
+    // ✏️ Edit button (inside same loop)
+    blogCard.querySelector(".editBtn").addEventListener("click", async () => {
+      try {
+        const newTitle = prompt("Edit blog title:", post.title);
+        if (newTitle === null) return;
+
+        const newContent = prompt("Edit blog content:", post.blog);
+        if (newContent === null) return;
+
+        const blogRef = doc(db, "blogs", post.docId);
+        await updateDoc(blogRef, {
+          title: newTitle,
+          blog: newContent,
+        });
+
+        // Update locally
+        const index = blogs.findIndex(b => b.docId === post.docId);
+        if (index !== -1) {
+          blogs[index].title = newTitle;
+          blogs[index].blog = newContent;
+        }
+
+        renderBlogs();
+        alert("✅ Blog updated successfully!");
+      } catch (err) {
+        console.error("Error updating blog:", err);
+      }
+    });
+
     blogList.appendChild(blogCard);
   });
 }
+
 
 // Toggle mobile menu
 const menuToggle = document.getElementById("menuToggle");
