@@ -1,9 +1,10 @@
 import { 
   collection, addDoc, Timestamp, getDocs, query, where, 
-  deleteDoc, updateDoc, doc 
+  deleteDoc, doc 
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js"; 
 import { auth, db } from "./config.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
 
 const form = document.querySelector("#form");
 const blogTitle = document.querySelector("#title");
@@ -13,27 +14,28 @@ const logoutBtn = document.querySelector("#logoutBtn");
 const userProfile = document.querySelector("#userProfile");
 
 let userUID = null;
-let blogs = []; // Array to store blogs locally
+let currentUserData = null; 
+let blogs = [];
 
 // Logout
 logoutBtn.addEventListener("click", () => {
   signOut(auth)
-    .then(() => window.location = "login.html")
-    .catch((err) => alert("Error logging out"));
+    .then(() => (window.location = "login.html"))
+    .catch(() => alert("Error logging out"));
 });
 
-// Check user login
+// Check user login state
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     userUID = user.uid;
 
-    // Fetch user name
+    // Fetch current user data (for image + name)
     try {
       const q = query(collection(db, "users"), where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
-        userProfile.textContent = userData.firstname + " " + userData.lastname;
+        currentUserData = querySnapshot.docs[0].data();
+        userProfile.textContent = `${currentUserData.firstname} ${currentUserData.lastname}`;
       } else {
         userProfile.textContent = "User";
       }
@@ -54,8 +56,9 @@ async function loadBlogs() {
   if (!userUID) return;
 
   const q = query(collection(db, "blogs"), where("uid", "==", userUID));
-  blogs = []; // reset array
+  blogs = [];
   const querySnapshot = await getDocs(q);
+
   querySnapshot.forEach((docSnap) => {
     blogs.push({ ...docSnap.data(), docId: docSnap.id });
   });
@@ -66,13 +69,15 @@ async function loadBlogs() {
 // Add new blog
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  if (!userUID) return;
+  if (!userUID || !currentUserData) return;
 
   const blogData = {
     title: blogTitle.value,
     blog: blogContent.value,
     time: Timestamp.fromDate(new Date()),
-    uid: userUID
+    uid: userUID,
+    userName: `${currentUserData.firstname} ${currentUserData.lastname}`,
+    userImage: currentUserData.profile || "",
   };
 
   try {
@@ -87,18 +92,21 @@ form.addEventListener("submit", async (e) => {
 
 // Render blogs
 function renderBlogs() {
-  blogList.innerHTML = ""; // clear previous blogs
+  blogList.innerHTML = "";
 
   blogs.forEach((post) => {
-    
     const blogCard = document.createElement("div");
     blogCard.className = "blog-card";
 
     blogCard.innerHTML = `
       <div class="user-info">
-        <img src="" alt="User" class="user-img">
-        <h4>${post.title}</h4>
+        <img src="${post.userImage || 'default-avatar.png'}" alt="User" class="user-img">
+        <div>
+          <h4>${post.userName || "User"}</h4>
+          <small>${new Date(post.time?.seconds * 1000).toLocaleString()}</small>
+        </div>
       </div>
+      <h3>${post.title}</h3>
       <p>${post.blog}</p>
       <div class="actions">
         <button class="editBtn">Edit</button>
@@ -106,7 +114,7 @@ function renderBlogs() {
       </div>
     `;
 
-    // Optional: Add Delete functionality
+    // Delete button
     blogCard.querySelector(".deleteBtn").addEventListener("click", async () => {
       try {
         await deleteDoc(doc(db, "blogs", post.docId));
