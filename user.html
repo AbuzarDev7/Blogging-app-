@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+
+ <link rel="stylesheet" href="./style/user.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+  <!-- ----------- HEADER ----------- -->
+  <header>
+    <h1>Personal Blogging App</h1>
+
+        <div class="menu-toggle" id="menuToggle">☰</div>
+
+        <nav id="navMenu">
+        <a href="index.html">All Blogs</a>
+        <a href="home.html">My Blogs</a>
+        <a href="user.html">User</a>
+        <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+  <h1 id="text">Profile</h1>
+
+  <!-- ----------- PROFILE SECTION ----------- -->
+  <div class="profile-container">
+    <div class="profile-box">
+      <img src="your-image.jpg" class="profile-pic">
+      <div class="name">Inzamam Malik</div>
+
+      <input type="password" class="input-field" placeholder="Old Password" id="oldPassword">
+      <input type="password" class="input-field" placeholder="New Password" id="newPassword">
+      <input type="password" class="input-field" placeholder="Repeat Password" id="repeatPassword">
+
+      <button id="updatePasswordBtn">Update Password</button>
+    </div>
+  </div>
+
+ <script type="module" src="./script/userPro.js"></script>
+
+</body>
+</html>
