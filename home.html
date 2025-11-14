@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Blogging App</title>
-  <link rel="stylesheet" href="./style/home.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Blogging App</title>
+<link rel="stylesheet" href="./style/home.css">
 </head>
 <body>
+
   <!-- Navbar -->
-  <nav class="navbar">
-    <h2 class="logo">Personal Blogging App</h2>
-  </nav>
+  <header>
+    <h1>Personal Blogging App</h1>
+    <div class="menu-toggle" id="menuToggle">☰</div>
+    <nav id="navMenu">
+      <a href="home.html">Home</a>
+      <a href="index.html">My Blogs</a>
+     <a href="user.html" id="userProfile">User</a>
 
-  <!-- Main Section -->
-  <section class="main">
-    <div class="content">
-      <h1 class="heading">Good Morning Readers! 🌞</h1>
-      <h3 class="sub-heading">All Blogs</h3>
+      <a href="#" id="logoutBtn">Logout</a>
+    </nav>
+  </header>
 
-      <!-- Blog 1 -->
-      <div class="blog-card">
-        <div class="blog-header">
-          <img src="https://via.placeholder.com/60" alt="Author" class="author-img">
-          <div class="blog-info">
-            <h4>Introducing Whisper</h4>
-            <p class="author">Elon Musk • August 17th, 2023</p>
-          </div>
-        </div>
-        <p class="blog-text">
-          Whisper is an automatic speech recognition (ASR) system trained on 680,000 hours of multilingual and multitask supervised data collected from the web. It enables transcription and translation into English for multiple languages.
-        </p>
-        <a href="#" class="blog-link">see all from this user</a>
-      </div>
-
-
-      <!-- Login Button (bottom of page) -->
-      <div class="bottom-btn">
-      <a href="login.html">  <button class="login-btn">Login to Continue →</button></a>
-      </div>
+  <!-- Dashboard -->
+  <div class="dashboard">
+    <h2>Welcome Back 👋</h2>
+<form id="form">
+    <div class="blog-form">
+      <input type="text" placeholder="Enter blog title" id="title" />
+      <textarea rows="5" placeholder="Write your post..." id="post"></textarea>
+      <button type="submit">Publish Blog</button>
     </div>
-  </section>
-  <script type="module" src="./script/home.js"></script>
+</form>
+    <div class="blog-list">
+      <h3>My Blogs</h3>
+
+   
+</div>
+
+
+  
+
+
+
+<script type="module" src="./script/home.js"></script>
 </body>
 </html>
