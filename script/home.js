@@ -1,53 +1,165 @@
-import { collection, getDocs, query, orderBy } 
-  from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-import { db } from "./config.js";
+    import { 
+  collection, addDoc, Timestamp, getDocs, query, where, 
+  deleteDoc, doc ,updateDoc
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js"; 
+import { auth, db } from "./config.js";
+import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
-// Select the container where blogs will show
-const content = document.querySelector(".content");
 
-// Fetch all blogs (all users)
-async function loadAllBlogs() {
-  try {
-    const q = query(collection(db, "blogs"), orderBy("time", "desc"));
-    const querySnapshot = await getDocs(q);
+const form = document.querySelector("#form");
+const blogTitle = document.querySelector("#title");
+const blogContent = document.querySelector("#post");
+const blogList = document.querySelector(".blog-list");
+const logoutBtn = document.querySelector("#logoutBtn");
+const userProfile = document.querySelector("#userProfile");
 
-    // Clear old cards (if any)
-    document.querySelectorAll(".blog-card").forEach(card => card.remove());
+let userUID = null;
+let currentUserData = null; 
+let blogs = [];
 
-    // Loop through all blogs
-    querySnapshot.forEach((docSnap) => {
-      const blog = docSnap.data();
+// Logout
+logoutBtn.addEventListener("click", () => {
+  signOut(auth)
+    .then(() => (window.location = "login.html"))
+    .catch(() => alert("Error logging out"));
+});
 
-      // Create blog card
-      const card = document.createElement("div");
-      card.className = "blog-card";
+// Check user login state
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    userUID = user.uid;
 
-      card.innerHTML = `
-        <div class="blog-header">
-          <img src="${blog.userImage || 'https://via.placeholder.com/60'}" 
-               alt="Author" class="author-img">
-          <div class="blog-info">
-            <h4>${blog.title}</h4>
-            <p class="author">
-              ${blog.userName || "Unknown User"} • 
-              ${new Date(blog.time?.seconds * 1000).toLocaleDateString()}
-            </p>
-          </div>
-        </div>
+    // Fetch current user data (for image + name)
+    try {
+      const q = query(collection(db, "users"), where("uid", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        currentUserData = querySnapshot.docs[0].data();
+        userProfile.textContent = `${currentUserData.firstname} ${currentUserData.lastname}`;
+      } else {
+        userProfile.textContent = "User";
+      }
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+      userProfile.textContent = "User";
+    }
 
-        <p class="blog-text">${blog.blog}</p>
-        <a href="#" class="blog-link">see all from this user</a>
-      `;
-
-      // Insert before login button
-      const loginBtn = document.querySelector(".bottom-btn");
-      content.insertBefore(card, loginBtn);
-    });
-
-  } catch (error) {
-    console.error("Error loading blogs:", error);
+    // Load user's blogs
+    await loadBlogs();
+  } else {
+    window.location = "login.html";
   }
+});
+
+// Load blogs from Firestore
+async function loadBlogs() {
+  if (!userUID) return;
+
+  const q = query(collection(db, "blogs"), where("uid", "==", userUID));
+  blogs = [];
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((docSnap) => {
+    blogs.push({ ...docSnap.data(), docId: docSnap.id });
+  });
+
+  renderBlogs();
 }
 
-// Run when page loads
-loadAllBlogs();
+// Add new blog
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!userUID || !currentUserData) return;
+
+  const blogData = {
+    title: blogTitle.value,
+    blog: blogContent.value,
+    time: Timestamp.fromDate(new Date()),
+    uid: userUID,
+    userName: `${currentUserData.firstname} ${currentUserData.lastname}`,
+    userImage: currentUserData.profile || "",
+  };
+
+  try {
+    const docRef = await addDoc(collection(db, "blogs"), blogData);
+    blogs.push({ ...blogData, docId: docRef.id });
+    renderBlogs();
+    form.reset();
+  } catch (err) {
+    console.error("Error adding blog:", err);
+  }
+});
+
+// Render blogs
+function renderBlogs() {
+  blogList.innerHTML = "";
+
+  blogs.forEach((post) => {
+    const blogCard = document.createElement("div");
+    blogCard.className = "blog-card";
+
+    blogCard.innerHTML = `
+      <div class="user-info">
+        <img src="${post.userImage || 'default-avatar.png'}" alt="User" class="user-img">
+        <div>
+          <h4>${post.userName || "User"}</h4>
+          <small>${new Date(post.time?.seconds * 1000).toLocaleString()}</small>
+        </div>
+      </div>
+      <h3>${post.title}</h3>
+      <p>${post.blog}</p>
+      <div class="actions">
+        <button class="editBtn">Edit</button>
+        <button class="deleteBtn">Delete</button>
+      </div>
+    `;
+
+    // 🗑 Delete button
+    blogCard.querySelector(".deleteBtn").addEventListener("click", async () => {
+      try {
+        await deleteDoc(doc(db, "blogs", post.docId));
+        blogs = blogs.filter(b => b.docId !== post.docId);
+        renderBlogs();
+      } catch (err) {
+        console.error("Error deleting blog:", err);
+      }
+    });
+
+    // ✏️ Edit button (inside same loop)
+    blogCard.querySelector(".editBtn").addEventListener("click", async () => {
+      try {
+        const newTitle = prompt("Edit blog title:", post.title);
+        if (newTitle === null) return;
+
+        const newContent = prompt("Edit blog content:", post.blog);
+        if (newContent === null) return;
+
+        const blogRef = doc(db, "blogs", post.docId);
+        await updateDoc(blogRef, {
+          title: newTitle,
+          blog: newContent,
+        });
+
+        // Update locally
+        const index = blogs.findIndex(b => b.docId === post.docId);
+        if (index !== -1) {
+          blogs[index].title = newTitle;
+          blogs[index].blog = newContent;
+        }
+
+        renderBlogs();
+        alert("✅ Blog updated successfully!");
+      } catch (err) {
+        console.error("Error updating blog:", err);
+      }
+    });
+
+    blogList.appendChild(blogCard);
+  });
+}
+
+
+// Toggle mobile menu
+const menuToggle = document.getElementById("menuToggle");
+const navMenu = document.getElementById("navMenu");
+menuToggle.addEventListener("click", () => navMenu.classList.toggle("active"));
