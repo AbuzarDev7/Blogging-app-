@@ -1,12 +1,12 @@
-
+// seeview.js
 import { db } from "./config.js";
 import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
-
+// Select containers
 const blogContainer = document.querySelector(".left-content");
 const profileCard = document.querySelector(".profile-card");
 
-
+// Get UID from URL
 const uid = new URLSearchParams(window.location.search).get("uid");
 
 if (!uid) {
@@ -39,7 +39,7 @@ function renderBlog(blog) {
 // Fetch user profile and blogs
 async function loadAuthorData(authorUid) {
   try {
-   
+    // 1️⃣ Fetch user info from users collection
     const userQuery = query(collection(db, "users"), where("uid", "==", authorUid));
     const userSnapshot = await getDocs(userQuery);
     let userData = null;
@@ -55,7 +55,7 @@ async function loadAuthorData(authorUid) {
       profileCard.dataset.filled = "true";
     }
 
- 
+    // 2️⃣ Fetch blogs from blogs collection
     const blogQuery = query(collection(db, "blogs"), where("uid", "==", authorUid));
     const blogSnapshot = await getDocs(blogQuery);
 
