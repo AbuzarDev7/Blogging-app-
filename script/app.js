@@ -36,7 +36,7 @@ async function loadAllBlogs() {
         </div>
 
         <p class="blog-text">${blog.blog}</p>
-        <a href="#" class="blog-link">see all from this user</a>
+            <a href="see-view.html?uid=${blog.uid}" class="blog-link">See all from this user</a>
       `;
 
       // Insert before login button
